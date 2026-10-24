@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skool Magic Writer — Write and schedule Skool posts in your browser</title>
+    <link rel="canonical" href="https://skapi.pro/magicwriter/">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236D28D9'/><text x='50%25' y='50%25' font-family='ui-sans-serif, system-ui, -apple-system, sans-serif' font-size='18' font-weight='900' fill='%23F4F4F0' text-anchor='middle' dy='.3em' transform='rotate(-5 16 16)'>SK</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QB0NSGLNLR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QB0NSGLNLR');
+
+      // Default consent mode
+      gtag('consent', 'default', {
+        'analytics_storage': 'granted',
+        'ad_storage': 'granted'
+      });
+    </script>
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '3062462557296405');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=3062462557296405&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <style>
+        :root {
+            /* Colors */
+            --c-bg: #F4F4F0;
+            --c-surface: #FFFFFF;
+            --c-surface-2: #EFEFE8;
+            --c-ink: #0A0A0A;
+            --c-ink-2: #1A1A1A;
+            --c-border: #0A0A0A;
+            --c-shadow: rgba(10,10,10,.15);
+            --c-accent: #6D28D9;
+            --c-accent-2: #A5B4FC;
+            --c-warn: #FBBF24;
+
+            /* Typography */
+            --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+            --fs-body: 17px;
+            --lh-body: 1.6;
+
+            /* Spacing */
+            --sp-1: 4px;
+            --sp-2: 8px;
+            --sp-3: 12px;
+            --sp-4: 16px;
+            --sp-5: 20px;
+            --sp-6: 24px;
+            --sp-8: 32px;
+            --sp-10: 40px;
+            --sp-12: 48px;
+            --sp-16: 64px;
+            --sp-20: 80px;
+            --sp-24: 96px;
+
+            /* Radius */
+            --r-sm: 10px;
+            --r-md: 14px;
+            --r-lg: 18px;
+            --r-xl: 24px;
+            --r-pill: 999px;
+
+            /* Borders & Shadows */
+            --b-1: 1px;
+            --shadow-soft: 0 1px 0 rgba(0,0,0,.06);
+            --shadow-hover: 0 10px 0 rgba(0,0,0,.10);
+
+            /* Motion */
+            --t-fast: .14s;
+            --e-out: cubic-bezier(.2,.8,.2,1);
+
+            /* Layout */
+            --container: 1160px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            color: var(--c-ink);
+            background: var(--c-bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            margin: 0;
+            letter-spacing: -0.02em;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: clamp(48px, 6vw, 88px);
+            font-weight: 900;
+            line-height: 1.0;
+            letter-spacing: -0.03em;
+        }
+
+        h2 {
+            font-size: clamp(28px, 3vw, 44px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        h3 {
+            font-size: 22px;
+            line-height: 1.15;
+            font-weight: 800;
+        }
+
+        p {
+            margin: 0;
+            color: var(--c-ink-2);
+        }
+
+        .section {
+            padding: 96px 0;
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 64px 0;
+            }
+        }
+
+        /* Navigation */
+        .nav {
+            height: 64px;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(8px);
+            background: color-mix(in srgb, var(--c-bg) 92%, transparent);
+            border-bottom: var(--b-1) solid var(--c-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            text-decoration: none;
+            color: var(--c-ink);
+        }
+
+        .logo span {
+            color: var(--c-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--c-ink);
+            transition: color var(--t-fast) var(--e-out);
+        }
+
+        .nav-links a:hover {
+            color: var(--c-accent);
+        }
+
+        /* Buttons */
+        .button {
+            border: var(--b-1) solid var(--c-border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-weight: 800;
+            line-height: 1;
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(0);
+            transition: transform .14s ease, box-shadow .14s ease, background-color .14s ease;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 0 rgba(0,0,0,.10);
+        }
+
+        .button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 0 rgba(0,0,0,.08);
+        }
+
+        .button--primary {
+            background: var(--c-accent);
+            color: #FFFFFF;
+        }
+        
+        .button--primary:hover {
+            background: color-mix(in srgb, var(--c-accent) 90%, #000);
+        }
+
+        .button--secondary {
+            background: var(--c-surface);
+            color: var(--c-ink);
+        }
+
+        .button--large {
+            padding: 14px 28px;
+            font-size: 17px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 96px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 64px 0 48px;
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin-bottom: 24px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2vw, 22px);
+            color: var(--c-ink-2);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Decorative gradient orbs */
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -30px) scale(1.05); }
+            50% { transform: translate(20px, -60px) scale(1.1); }
+            75% { transform: translate(-20px, -30px) scale(1.05); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-50px, 20px) scale(1.08); }
+            50% { transform: translate(-80px, -20px) scale(1.12); }
+            75% { transform: translate(-30px, -40px) scale(1.05); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, 40px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(1.05); }
+        }
+
+        @keyframes float4 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, -20px) scale(1.05); }
+            50% { transform: translate(30px, 30px) scale(1.1); }
+            75% { transform: translate(-40px, 10px) scale(1.05); }
+        }
+
+        .orb-1 {
+            top: -100px;
+            left: -50px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--c-accent) 0%, transparent 70%);
+            animation: float1 12s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            top: 100px;
+            right: -100px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--c-accent-2) 0%, transparent 70%);
+            animation: float2 14s ease-in-out infinite;
+        }
+
+        .orb-3 {
+            bottom: -50px;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--c-warn) 0%, transparent 70%);
+            animation: float3 10s ease-in-out infinite;
+        }
+
+        .orb-4 {
+            bottom: 100px;
+            right: 20%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, var(--c-accent) 0%, transparent 70%);
+            animation: float4 13s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .gradient-orb {
+                display: none;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--c-surface);
+            border: var(--b-1) solid var(--c-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            transition: transform var(--t-fast) var(--e-out), box-shadow var(--t-fast) var(--e-out);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Comparison Section */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .comparison-card {
+            padding: 32px;
+        }
+
+        .comparison-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: var(--b-1) solid var(--c-border);
+        }
+
+        .comparison-header h3 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            padding: 14px 0;
+            padding-left: 40px;
+            position: relative;
+            font-size: 16px;
+            border-bottom: var(--b-1) dashed var(--c-border);
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--c-ink);
+            font-weight: 700;
+        }
+
+        .comparison-card.after .comparison-list li::before {
+            content: '✓';
+        }
+
+        /* Features Section */
+        .features-section {
+            background: var(--c-surface-2);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            padding: 28px;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--c-accent-2);
+            border: var(--b-1) solid var(--c-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--c-accent);
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: var(--c-warn);
+            color: var(--c-ink);
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: var(--r-pill);
+            border: var(--b-1) solid var(--c-border);
+            box-shadow: var(--shadow-soft);
+            margin-left: 8px;
+        }
+
+        /* Coming Soon Badge */
+        .coming-soon-badge {
+            display: inline-block;
+            background: var(--c-accent-2);
+            color: var(--c-ink);
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            border: var(--b-1) solid var(--c-border);
+            margin-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .testimonial-card {
+            padding: 28px;
+        }
+
+        .testimonial-quote {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -8px;
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--c-accent);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--c-accent-2);
+            border: var(--b-1) solid var(--c-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--c-accent);
+        }
+
+        .testimonial-avatar i {
+            font-size: 24px;
+        }
+
+        .testimonial-name {
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .testimonial-role {
+            font-size: 14px;
+            color: var(--c-ink-2);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .email-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 14px 20px;
+            font-family: var(--font-sans);
+            font-size: 16px;
+            border: var(--b-1) solid var(--c-border);
+            border-radius: 12px;
+            background: var(--c-surface);
+            color: var(--c-ink);
+            outline: none;
+            transition: border-color var(--t-fast) var(--e-out), box-shadow var(--t-fast) var(--e-out);
+        }
+
+        .email-form input:focus {
+            border-color: var(--c-accent);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2);
+        }
+
+        .email-form input::placeholder {
+            color: var(--c-ink-2);
+            opacity: 0.6;
+        }
+
+        .form-success {
+            background: var(--c-surface);
+            border: 1px solid var(--c-border);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .form-success h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--c-accent);
+        }
+        .form-success p {
+            font-size: 16px;
+        }
+        .form-success p strong {
+            font-weight: 800;
+            color: var(--c-ink);
+        }
+
+        /* Categories / Tags */
+        .categories-section {
+            background: var(--c-surface-2);
+        }
+
+        .categories-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .category-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--c-surface);
+            border: var(--b-1) solid var(--c-border);
+            border-radius: var(--r-pill);
+            font-weight: 700;
+            font-size: 14px;
+            transition: all var(--t-fast) var(--e-out);
+            cursor: default;
+        }
+
+        .category-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .category-chip i {
+            font-size: 16px;
+        }
+
+        .chip-automation i { color: var(--c-accent); }
+        .chip-ai i { color: var(--c-accent-2); }
+        .chip-integration i { color: var(--c-warn); }
+        .chip-messaging i { color: #FF6B6B; }
+        .chip-comments i { color: #4ECDC4; }
+        .chip-workflow i { color: #A78BFA; }
+
+        /* Footer */
+        footer {
+            background: var(--c-ink);
+            color: var(--c-bg);
+            padding: 48px 0;
+            border-top: var(--b-1) solid var(--c-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 48px;
+            margin-bottom: 48px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .footer-links {
+                align-items: flex-start;
+            }
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo span {
+            color: var(--c-accent);
+        }
+
+        footer p {
+            color: #FFFFFF !important;
+            opacity: 1;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .footer-links a {
+            color: var(--c-bg);
+            text-decoration: none;
+            font-weight: 600;
+            opacity: 0.8;
+            transition: opacity var(--t-fast) var(--e-out);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,.1);
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* Animations */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Consent Banner */
+        #consent-banner {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: var(--c-ink);
+            color: var(--c-bg);
+            padding: 24px;
+            display: none; /* Hidden by default, shown by JS */
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            z-index: 2000;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #consent-banner p {
+            color: var(--c-bg);
+            opacity: 0.9;
+            margin: 0;
+            max-width: 600px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .consent-buttons {
+            display: flex;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        #consent-banner .button--secondary {
+            background: #333;
+            color: #fff;
+            border-color: #444;
+        }
+        #consent-banner .button--secondary:hover {
+            background: #444;
+        }
+
+        #loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--c-accent);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-bar"></div>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <a href="/" class="logo">SKapi<span>.pro</span></a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how">How it works</a>
+                <a href="mailto:connect@skapi.pro">Contact</a>
+            </div>
+            <a href="https://chromewebstore.google.com/detail/flpjgiibdkolidnhnfiiihbnhpcfifii" target="_blank" rel="noopener" class="button button--primary">Add to Chrome</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+
+        <div class="container hero-content">
+            <h1 class="animate-in">Write and schedule Skool posts without leaving the composer</h1>
+            <p class="hero-subtitle animate-in delay-1">Skool Magic Writer drafts your posts, finds the right GIF, and publishes on time. You stay in the composer.</p>
+            <p style="font-size: 14px; color: var(--c-ink-2); opacity: 0.7; margin-bottom: 32px;" class="animate-in delay-1">
+                <i class="fas fa-info-circle"></i> Works in your browser. Free to start. Not affiliated with Skool.
+            </p>
+            <div class="hero-cta animate-in delay-2">
+                <a href="https://chromewebstore.google.com/detail/flpjgiibdkolidnhnfiiihbnhpcfifii" target="_blank" rel="noopener" class="button button--primary button--large">
+                    <i class="fab fa-chrome"></i>
+                    Add to Chrome
+                </a>
+                <a href="#how" class="button button--secondary button--large">
+                    See how it works
+                </a>
+            </div>
+            <img src="screenshot1.png" alt="Skool Magic Writer scheduling a post" class="animate-in delay-3" style="max-width: 100%; width: 860px; border: 1px solid var(--c-border); border-radius: 16px; box-shadow: 0 10px 0 rgba(0,0,0,.10); margin-top: 56px;">
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header animate-in">
+                <h2>The difference</h2>
+                <p>What changes when your posts write and publish themselves</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="card comparison-card animate-in delay-1">
+                    <div class="comparison-header">
+                        <h3>Before 😰</h3>
+                        <p>Writing every post by hand</p>
+                    </div>
+                    <ul class="comparison-list">
+                        <li>Typing the same intros over and over in a blank composer</li>
+                        <li>Hunting for a GIF in another tab, re-uploading it every time</li>
+                        <li>Copying drafts from notes into Skool</li>
+                        <li>Missing your posting time because the day got busy</li>
+                        <li>Staying online just to hit Publish</li>
+                    </ul>
+                </div>
+
+                <div class="card comparison-card after animate-in delay-2">
+                    <div class="comparison-header">
+                        <h3>After 🎉</h3>
+                        <p>With Skool Magic Writer</p>
+                    </div>
+                    <ul class="comparison-list">
+                        <li>A full draft in one click. Edit it or post as is</li>
+                        <li>GIF picker right in the composer, search and drop</li>
+                        <li>Schedule for tonight 9pm or Monday 9am in two clicks</li>
+                        <li>Posts go out on time, even while you sleep</li>
+                        <li>A notification when your post is live</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features-section" id="features">
+        <div class="container">
+            <div class="section-header animate-in">
+                <h2>What's inside</h2>
+                <p>Everything for writing and scheduling posts in one place</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="card feature-card animate-in delay-1">
+                    <div class="feature-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+                    <h3>AI drafts in seconds</h3>
+                    <p>Describe the post in one sentence. Get a ready-to-edit draft that matches your tone.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-2">
+                    <div class="feature-icon"><i class="fas fa-film"></i></div>
+                    <h3>Built-in GIF picker</h3>
+                    <p>Search and drop a GIF into your post right from the composer. No extra tabs.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-3">
+                    <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Quick presets</h3>
+                    <p>Tonight 9pm, tomorrow morning, Monday 9am. Two clicks and the post is planned.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-4">
+                    <div class="feature-icon"><i class="fas fa-paper-plane"></i></div>
+                    <h3>Publishing on autopilot</h3>
+                    <p>Scheduled posts publish themselves at the chosen minute, GIF included.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-4">
+                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                    <h3>Live notifications</h3>
+                    <p>A desktop notification the moment your post goes out. No checking the feed.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-4">
+                    <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                    <h3>Private by design</h3>
+                    <p>Your Skool login stays in your browser and is used only to publish your own posts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works Section -->
+    <section class="section" id="how">
+        <div class="container">
+            <div class="section-header animate-in">
+                <h2>How it works</h2>
+                <p>Three steps. No setup, no new tool to learn</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="card feature-card animate-in delay-1">
+                    <div class="feature-icon" style="font-weight: 900;">1</div>
+                    <h3>Open any Skool composer</h3>
+                    <p>The ✨ and 📅 buttons appear next to the Post button. Nothing to configure.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-2">
+                    <div class="feature-icon" style="font-weight: 900;">2</div>
+                    <h3>Write or draft with AI</h3>
+                    <p>Type as usual, or let the AI write the first version. Add a GIF if you feel like it.</p>
+                </div>
+
+                <div class="card feature-card animate-in delay-3">
+                    <div class="feature-icon" style="font-weight: 900;">3</div>
+                    <h3>Pick a time, done</h3>
+                    <p>Hit 📅, choose a preset or an exact time. The post publishes itself.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section" id="cta">
+        <div class="container">
+            <div class="cta-content animate-in">
+                <h2>Your next post can write itself</h2>
+                <p>Install the extension, open Skool, and try it on your next post. Free to start: your first 5 posts are on us.</p>
+                <div class="hero-cta">
+                    <a href="https://chromewebstore.google.com/detail/flpjgiibdkolidnhnfiiihbnhpcfifii" target="_blank" rel="noopener" class="button button--primary button--large">
+                        <i class="fab fa-chrome"></i>
+                        Add to Chrome
+                    </a>
+                </div>
+                <p style="margin-top: 24px; font-size: 15px;">
+                    Questions? Email us at <a href="mailto:connect@skapi.pro" style="color: var(--c-accent); font-weight: 700;">connect@skapi.pro</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consent Banner -->
+    <div id="consent-banner">
+        <p>We use cookies to analyze site performance and enhance your experience. By clicking “Accept”, you agree to our use of cookies for analytics.</p>
+        <div class="consent-buttons">
+            <button id="consent-accept" class="button button--primary">Accept</button>
+            <button id="consent-decline" class="button button--secondary">Decline</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">SKapi<span>.pro</span></div>
+                    <p>Tools for Skool communities: the SKapi API for automation and Magic Writer for writing and scheduling posts.</p>
+                </div>
+                <div>
+                    <div class="footer-links">
+                        <a href="/magicwriter/">Magic Writer</a>
+                        <a href="/privacy.html">Privacy Policy</a>
+                        <a href="/terms.html">Terms of Service</a>
+                        <a href="mailto:connect@skapi.pro">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SKapi.pro</p>
+                <p style="font-size: 13px; margin-top: 8px; opacity: 0.7;">Skool Magic Writer and SKapi are not affiliated with, endorsed by, or sponsored by Skool.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/main.js" defer></script>
+</body>
+</html>
