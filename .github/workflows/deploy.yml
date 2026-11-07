@@ -1,0 +1,27 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Stage site files
+        run: |
+          mkdir site
+          cp -r index.html privacy.html terms.html robots.txt sitemap.xml main.js favicon.svg _redirects magicwriter site/
+          cp *.webp site/
+
+      - name: Deploy
+        run: npx --yes wrangler@4 pages deploy site --project-name skapi-pro-landing-page --branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
