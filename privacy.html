@@ -17,9 +17,12 @@
 
       // Default consent mode
       gtag('consent', 'default', {
-        'analytics_storage': 'granted',
-        'ad_storage': 'granted'
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied'
       });
+      if (localStorage.getItem('consentStatus') === 'granted' || localStorage.getItem('skapi_consent') === 'accepted') {
+        gtag('consent', 'update', { 'analytics_storage': 'granted', 'ad_storage': 'granted' });
+      }
     </script>
     <!-- Meta Pixel Code -->
     <script>

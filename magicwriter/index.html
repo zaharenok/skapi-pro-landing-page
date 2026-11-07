@@ -19,9 +19,12 @@
 
       // Default consent mode
       gtag('consent', 'default', {
-        'analytics_storage': 'granted',
-        'ad_storage': 'granted'
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied'
       });
+      if (localStorage.getItem('consentStatus') === 'granted' || localStorage.getItem('skapi_consent') === 'accepted') {
+        gtag('consent', 'update', { 'analytics_storage': 'granted', 'ad_storage': 'granted' });
+      }
     </script>
     <!-- Meta Pixel Code -->
     <script>
@@ -1082,8 +1085,8 @@
                 <div>
                     <div class="footer-links">
                         <a href="/magicwriter/">Magic Writer</a>
-                        <a href="/privacy">Privacy Policy</a>
-                        <a href="/terms">Terms of Service</a>
+                        <a href="/privacy.html">Privacy Policy</a>
+                        <a href="/terms.html">Terms of Service</a>
                         <a href="mailto:connect@skapi.pro">Contact</a>
                     </div>
                 </div>
