@@ -13,13 +13,13 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://skapi.pro/privacy</loc>
+    <loc>https://skapi.pro/privacy.html</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://skapi.pro/terms</loc>
+    <loc>https://skapi.pro/terms.html</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

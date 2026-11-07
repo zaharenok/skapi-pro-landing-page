@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKapi.pro - Automate Your Skool Community Management</title>
+    <title>SKapi.pro — Skool API for Make.com &amp; n8n Automation</title>
+    <meta name="description" content="The first Skool API that connects to Make.com and n8n. Automate member approvals, messages, comments and community management. Free during beta.">
+    <meta name="keywords" content="Skool API, Skool automation, Make.com Skool, n8n Skool, Skool integration, community automation">
     <link rel="canonical" href="https://skapi.pro/">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236D28D9'/><text x='50%25' y='50%25' font-family='ui-sans-serif, system-ui, -apple-system, sans-serif' font-size='18' font-weight='900' fill='%23F4F4F0' text-anchor='middle' dy='.3em' transform='rotate(-5 16 16)'>SK</text></svg>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google tag (gtag.js) -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QB0NSGLNLR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-QB0NSGLNLR');
-
-      // Default consent mode
       gtag('consent', 'default', {
-        'analytics_storage': 'granted',
-        'ad_storage': 'granted'
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied'
       });
+      if (localStorage.getItem('consentStatus') === 'granted' || localStorage.getItem('skapi_consent') === 'accepted') {
+        gtag('consent', 'update', { 'analytics_storage': 'granted', 'ad_storage': 'granted' });
+      }
     </script>
-    <!-- Meta Pixel Code -->
+    
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -39,78 +44,35 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=3062462557296405&ev=PageView&noscript=1"
     /></noscript>
-    <!-- End Meta Pixel Code -->
+
     <style>
         :root {
-            /* Colors */
-            --c-bg: #F4F4F0;
-            --c-surface: #FFFFFF;
-            --c-surface-2: #EFEFE8;
-            --c-ink: #0A0A0A;
-            --c-ink-2: #1A1A1A;
-            --c-border: #0A0A0A;
-            --c-shadow: rgba(10,10,10,.15);
-            --c-accent: #6D28D9;
-            --c-accent-2: #A5B4FC;
-            --c-warn: #FBBF24;
-
-            /* Typography */
-            --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-            --fs-body: 17px;
-            --lh-body: 1.6;
-
-            /* Spacing */
-            --sp-1: 4px;
-            --sp-2: 8px;
-            --sp-3: 12px;
-            --sp-4: 16px;
-            --sp-5: 20px;
-            --sp-6: 24px;
-            --sp-8: 32px;
-            --sp-10: 40px;
-            --sp-12: 48px;
-            --sp-16: 64px;
-            --sp-20: 80px;
-            --sp-24: 96px;
-
-            /* Radius */
-            --r-sm: 10px;
-            --r-md: 14px;
-            --r-lg: 18px;
-            --r-xl: 24px;
-            --r-pill: 999px;
-
-            /* Borders & Shadows */
-            --b-1: 1px;
-            --shadow-soft: 0 1px 0 rgba(0,0,0,.06);
-            --shadow-hover: 0 10px 0 rgba(0,0,0,.10);
-
-            /* Motion */
-            --t-fast: .14s;
-            --e-out: cubic-bezier(.2,.8,.2,1);
-
-            /* Layout */
-            --container: 1160px;
+            --bg: #f4f4f0;
+            --surface: #ffffff;
+            --ink: #000000;
+            --ink-soft: #242423;
+            --muted: #737373;
+            --border: #000000;
+            --pink: #ff90e8;
+            --yellow: #ffc900;
+            --font: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
+            --container: 1120px;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --border-w: 1.5px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: var(--font-sans);
-            font-size: var(--fs-body);
-            line-height: var(--lh-body);
-            color: var(--c-ink);
-            background: var(--c-bg);
+            font-family: var(--font);
+            font-size: 17px;
+            line-height: 1.55;
+            color: var(--ink);
+            background: var(--bg);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         .container {
@@ -120,61 +82,68 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 16px;
-            }
+            .container { padding: 0 16px; }
         }
 
-        /* Typography */
         h1, h2, h3 {
-            margin: 0;
-            letter-spacing: -0.02em;
-            font-weight: 800;
-        }
-
-        h1 {
-            font-size: clamp(48px, 6vw, 88px);
-            font-weight: 900;
-            line-height: 1.0;
+            font-weight: 700;
             letter-spacing: -0.03em;
+            line-height: 1.08;
         }
 
-        h2 {
-            font-size: clamp(28px, 3vw, 44px);
-            line-height: 1.05;
-            letter-spacing: -0.02em;
+        h1 { font-size: clamp(34px, 6.2vw, 64px); }
+        h2 { font-size: clamp(26px, 4vw, 40px); }
+        h3 { font-size: 20px; font-weight: 700; }
+
+        p { color: var(--ink-soft); }
+        a { color: inherit; text-decoration: none; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 22px;
+            font-family: var(--font);
+            font-size: 15px;
+            font-weight: 600;
+            border: var(--border-w) solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+            text-decoration: none;
+            line-height: 1.2;
+            white-space: nowrap;
         }
 
-        h3 {
-            font-size: 22px;
-            line-height: 1.15;
-            font-weight: 800;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 0 var(--border);
         }
 
-        p {
-            margin: 0;
-            color: var(--c-ink-2);
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 1px 1px 0 var(--border);
         }
 
-        .section {
-            padding: 96px 0;
+        .btn-primary { background: var(--ink); color: #fff; }
+        .btn-primary:hover { background: #222; }
+        .btn-secondary { background: var(--surface); color: var(--ink); }
+        .btn-pink { background: var(--pink); color: var(--ink); }
+        .btn-large { padding: 14px 26px; font-size: 16px; }
+
+        @media (max-width: 480px) {
+            .btn-large { width: 100%; padding: 15px 20px; }
         }
 
-        @media (max-width: 768px) {
-            .section {
-                padding: 64px 0;
-            }
-        }
-
-        /* Navigation */
         .nav {
-            height: 64px;
             position: sticky;
             top: 0;
-            backdrop-filter: blur(8px);
-            background: color-mix(in srgb, var(--c-bg) 92%, transparent);
-            border-bottom: var(--b-1) solid var(--c-border);
-            z-index: 1000;
+            z-index: 200;
+            background: color-mix(in srgb, var(--bg) 90%, transparent);
+            backdrop-filter: blur(12px);
+            border-bottom: var(--border-w) solid var(--border);
+            height: 60px;
             display: flex;
             align-items: center;
         }
@@ -184,690 +153,668 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            position: relative;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            text-decoration: none;
-            color: var(--c-ink);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            z-index: 2;
         }
 
-        .logo span {
-            color: var(--c-accent);
-        }
+        .logo .dot { color: var(--pink); }
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 28px;
             align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
         }
 
         .nav-links a {
-            font-size: 15px;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--c-ink);
-            transition: color var(--t-fast) var(--e-out);
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.15s;
         }
 
-        .nav-links a:hover {
-            color: var(--c-accent);
-        }
+        .nav-links a:hover { opacity: 0.55; }
+        .nav-cta { z-index: 2; }
 
-        /* Buttons */
-        .button {
-            border: var(--b-1) solid var(--c-border);
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-weight: 800;
-            line-height: 1;
-            display: inline-flex;
-            gap: 10px;
-            align-items: center;
-            justify-content: center;
-            transform: translateY(0);
-            transition: transform .14s ease, box-shadow .14s ease, background-color .14s ease;
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
             cursor: pointer;
-            text-decoration: none;
-            font-size: 15px;
+            padding: 8px;
+            z-index: 3;
         }
 
-        .button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 0 rgba(0,0,0,.10);
+        .burger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--ink);
+            border-radius: 1px;
+            transition: transform 0.2s, opacity 0.2s;
         }
 
-        .button:active {
-            transform: translateY(1px);
-            box-shadow: 0 4px 0 rgba(0,0,0,.08);
+        .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: var(--bg);
+            border-bottom: var(--border-w) solid var(--border);
+            padding: 16px 24px 24px;
+            z-index: 199;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
         }
 
-        .button--primary {
-            background: var(--c-accent);
-            color: #FFFFFF;
-        }
-        
-        .button--primary:hover {
-            background: color-mix(in srgb, var(--c-accent) 90%, #000);
-        }
+        .mobile-menu.open { display: flex; }
 
-        .button--secondary {
-            background: var(--c-surface);
-            color: var(--c-ink);
-        }
-
-        .button--large {
-            padding: 14px 28px;
+        .mobile-menu a {
             font-size: 17px;
+            font-weight: 600;
+            padding: 14px 0;
+            border-bottom: 1px solid #e5e5e0;
         }
 
-        /* Hero */
+        .mobile-menu a:last-of-type { border-bottom: none; }
+        .mobile-menu .btn { margin-top: 12px; width: 100%; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-cta { display: none; }
+            .burger { display: flex; }
+        }
+
         .hero {
-            padding: 120px 0 96px;
+            padding: 90px 0 70px;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 64px 0 48px;
-            }
+            .hero { padding: 48px 0 40px; }
         }
 
         .hero-content {
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            max-width: 740px;
+            margin: 0 auto;
         }
 
-        .hero h1 {
-            margin-bottom: 24px;
+        .hero h1 { margin-bottom: 18px; }
+
+        .hero-sub {
+            font-size: clamp(16px, 2.1vw, 19px);
+            color: var(--ink-soft);
+            max-width: 540px;
+            margin: 0 auto 10px;
+            line-height: 1.5;
         }
 
-        .hero-subtitle {
-            font-size: clamp(18px, 2vw, 22px);
-            color: var(--c-ink-2);
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+        .hero-note {
+            font-size: 12.5px;
+            color: var(--muted);
+            margin-bottom: 32px;
         }
 
         .hero-cta {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
-        /* Decorative gradient orbs */
-        .gradient-orb {
+        @media (max-width: 480px) {
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+        }
+
+        .coins-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .coin {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        @keyframes float1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(40px, -30px) scale(1.05); }
-            50% { transform: translate(20px, -60px) scale(1.1); }
-            75% { transform: translate(-20px, -30px) scale(1.05); }
-        }
-
-        @keyframes float2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(-50px, 20px) scale(1.08); }
-            50% { transform: translate(-80px, -20px) scale(1.12); }
-            75% { transform: translate(-30px, -40px) scale(1.05); }
-        }
-
-        @keyframes float3 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, 40px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(1.05); }
-        }
-
-        @keyframes float4 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(60px, -20px) scale(1.05); }
-            50% { transform: translate(30px, 30px) scale(1.1); }
-            75% { transform: translate(-40px, 10px) scale(1.05); }
-        }
-
-        .orb-1 {
-            top: -100px;
-            left: -50px;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--c-accent) 0%, transparent 70%);
-            animation: float1 12s ease-in-out infinite;
-        }
-
-        .orb-2 {
-            top: 100px;
-            right: -100px;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, var(--c-accent-2) 0%, transparent 70%);
-            animation: float2 14s ease-in-out infinite;
-        }
-
-        .orb-3 {
-            bottom: -50px;
-            left: 20%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--c-warn) 0%, transparent 70%);
-            animation: float3 10s ease-in-out infinite;
-        }
-
-        .orb-4 {
-            bottom: 100px;
-            right: 20%;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, var(--c-accent) 0%, transparent 70%);
-            animation: float4 13s ease-in-out infinite;
-        }
-
-        @media (max-width: 768px) {
-            .gradient-orb {
-                display: none;
-            }
-        }
-
-        /* Cards */
-        .card {
-            background: var(--c-surface);
-            border: var(--b-1) solid var(--c-border);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: var(--shadow-soft);
-            transition: transform var(--t-fast) var(--e-out), box-shadow var(--t-fast) var(--e-out);
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Comparison Section */
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 48px;
-        }
-
-        @media (max-width: 768px) {
-            .comparison-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        .comparison-card {
-            padding: 32px;
-        }
-
-        .comparison-header {
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: var(--b-1) solid var(--c-border);
-        }
-
-        .comparison-header h3 {
-            font-size: 26px;
-            margin-bottom: 8px;
-        }
-
-        .comparison-list {
-            list-style: none;
-        }
-
-        .comparison-list li {
-            padding: 14px 0;
-            padding-left: 40px;
-            position: relative;
-            font-size: 16px;
-            border-bottom: var(--b-1) dashed var(--c-border);
-        }
-
-        .comparison-list li:last-child {
-            border-bottom: none;
-        }
-
-        .comparison-list li::before {
-            content: '✗';
-            position: absolute;
-            left: 0;
-            top: 14px;
-            width: 24px;
-            height: 24px;
+            background: var(--pink);
+            border: 3px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--c-ink);
             font-weight: 700;
+            color: var(--ink);
+            box-shadow: 4px 5px 0 rgba(0,0,0,0.1);
+            user-select: none;
+        }
+
+        .coin-sm { width: 72px; height: 72px; font-size: 22px; }
+        .coin-md { width: 110px; height: 110px; font-size: 36px; }
+        .coin-lg { width: 150px; height: 150px; font-size: 48px; }
+
+        .coin-1 { top: 6%; left: -30px; }
+        .coin-2 { top: 10%; right: -40px; }
+        .coin-3 { bottom: 8%; left: 5%; }
+        .coin-4 { bottom: 15%; right: 4%; }
+        .coin-5 { top: 45%; left: -20px; opacity: 0.9; }
+        .coin-6 { top: 55%; right: -25px; opacity: 0.9; }
+
+        .coin-yellow { background: var(--yellow); }
+
+        @media (max-width: 1000px) {
+            .coin-5, .coin-6 { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .coins-layer { display: none; }
+        }
+
+        @keyframes floatA {
+            0%, 100% { transform: translateY(0) rotate(-22deg); }
+            50% { transform: translateY(-12px) rotate(-18deg); }
+        }
+        @keyframes floatB {
+            0%, 100% { transform: translateY(0) rotate(18deg); }
+            50% { transform: translateY(-10px) rotate(22deg); }
+        }
+        @keyframes floatC {
+            0%, 100% { transform: translateY(0) rotate(14deg); }
+            50% { transform: translateY(-8px) rotate(10deg); }
+        }
+        @keyframes floatD {
+            0%, 100% { transform: translateY(0) rotate(-28deg); }
+            50% { transform: translateY(-14px) rotate(-24deg); }
+        }
+
+        .coin-1 { animation: floatA 7s ease-in-out infinite; }
+        .coin-2 { animation: floatB 8s ease-in-out infinite 0.5s; }
+        .coin-3 { animation: floatC 6.5s ease-in-out infinite 1s; }
+        .coin-4 { animation: floatD 7.5s ease-in-out infinite 0.3s; }
+        .coin-5 { animation: floatA 9s ease-in-out infinite 1.2s; }
+        .coin-6 { animation: floatB 8.5s ease-in-out infinite 0.8s; }
+
+        .section { padding: 80px 0; }
+
+        @media (max-width: 768px) {
+            .section { padding: 52px 0; }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 { margin-bottom: 10px; }
+
+        .section-header p {
+            font-size: 17px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .section-header { margin-bottom: 28px; }
+            .section-header p { font-size: 15.5px; }
+        }
+
+        .card {
+            background: var(--surface);
+            border: var(--border-w) solid var(--border);
+            border-radius: var(--radius);
+            padding: 26px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0 var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 20px; }
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid { grid-template-columns: 1fr; gap: 14px; }
+        }
+
+        .comparison-card h3 {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .comparison-card .label {
+            font-size: 13.5px;
+            color: var(--muted);
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1.5px dashed var(--border);
+        }
+
+        .comparison-list { list-style: none; }
+
+        .comparison-list li {
+            padding: 11px 0 11px 34px;
+            position: relative;
+            font-size: 15px;
+            border-bottom: 1px dashed #ddd;
+            line-height: 1.4;
+        }
+
+        .comparison-list li:last-child { border-bottom: none; }
+
+        .comparison-list li::before {
+            content: "×";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 22px;
+            height: 22px;
+            background: #f0f0f0;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1;
         }
 
         .comparison-card.after .comparison-list li::before {
-            content: '✓';
+            content: "✓";
+            background: var(--pink);
         }
 
-        /* Features Section */
         .features-section {
-            background: var(--c-surface-2);
+            background: #ebebe6;
+            border-top: var(--border-w) solid var(--border);
+            border-bottom: var(--border-w) solid var(--border);
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-top: 48px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
         }
 
-        .feature-card {
-            padding: 28px;
+        @media (max-width: 900px) {
+            .features-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 560px) {
+            .features-grid { grid-template-columns: 1fr; }
         }
 
         .feature-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--c-accent-2);
-            border: var(--b-1) solid var(--c-border);
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            background: var(--pink);
+            border: var(--border-w) solid var(--border);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--c-accent);
+            margin-bottom: 16px;
+            color: var(--ink);
+            flex-shrink: 0;
         }
 
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+
+        .feature-icon.yellow { background: var(--yellow); }
+        .feature-icon.white { background: var(--surface); }
+
         .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            font-size: 18px;
         }
 
         .feature-card p {
-            font-size: 16px;
-            line-height: 1.6;
+            font-size: 14.5px;
+            line-height: 1.5;
         }
 
-        /* Badge */
+        .feature-card a {
+            color: var(--ink);
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
         .badge {
             display: inline-block;
-            background: var(--c-warn);
-            color: var(--c-ink);
-            padding: 6px 14px;
-            font-size: 13px;
+            background: var(--yellow);
+            color: var(--ink);
+            padding: 2px 9px;
+            font-size: 10.5px;
             font-weight: 700;
-            border-radius: var(--r-pill);
-            border: var(--b-1) solid var(--c-border);
-            box-shadow: var(--shadow-soft);
-            margin-left: 8px;
-        }
-
-        /* Coming Soon Badge */
-        .coming-soon-badge {
-            display: inline-block;
-            background: var(--c-accent-2);
-            color: var(--c-ink);
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 700;
-            border-radius: 6px;
-            border: var(--b-1) solid var(--c-border);
-            margin-left: 8px;
+            border-radius: 5px;
+            border: 1.5px solid var(--border);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
+            vertical-align: middle;
+            margin-left: 5px;
         }
 
-        /* Testimonials */
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-top: 48px;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
         @media (max-width: 768px) {
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .testimonial-card {
-            padding: 28px;
+            .testimonials-grid { grid-template-columns: 1fr; }
         }
 
         .testimonial-quote {
+            font-size: 15.5px;
+            line-height: 1.5;
+            margin-bottom: 18px;
             position: relative;
-            padding-left: 48px;
-            margin-bottom: 20px;
+            padding-left: 26px;
         }
 
         .testimonial-quote::before {
             content: '"';
             position: absolute;
             left: 0;
-            top: -8px;
-            font-size: 48px;
-            font-weight: 900;
+            top: -4px;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--pink);
             line-height: 1;
-            color: var(--c-accent);
         }
 
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
         }
 
-        .testimonial-avatar {
-            width: 48px;
-            height: 48px;
-            background: var(--c-accent-2);
-            border: var(--b-1) solid var(--c-border);
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--pink);
+            border: var(--border-w) solid var(--border);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-size: 20px;
-            color: var(--c-accent);
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
         }
 
-        .testimonial-avatar i {
-            font-size: 24px;
-        }
+        .author-name { font-weight: 700; font-size: 14.5px; }
+        .author-role { font-size: 12.5px; color: var(--muted); }
 
-        .testimonial-name {
-            font-weight: 800;
-            font-size: 16px;
-        }
+        .cta-section { text-align: center; }
 
-        .testimonial-role {
-            font-size: 14px;
-            color: var(--c-ink-2);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            text-align: center;
-        }
-
-        .cta-content {
-            max-width: 700px;
+        .cta-box {
+            background: var(--surface);
+            border: var(--border-w) solid var(--border);
+            border-radius: 18px;
+            padding: 48px 36px;
+            max-width: 580px;
             margin: 0 auto;
+            box-shadow: 6px 6px 0 var(--border);
+            position: relative;
         }
 
-        .cta-content h2 {
-            margin-bottom: 20px;
+        @media (max-width: 600px) {
+            .cta-box { padding: 32px 18px; border-radius: 14px; }
         }
 
-        .cta-content p {
-            font-size: 18px;
-            margin-bottom: 32px;
+        .cta-box h2 { margin-bottom: 10px; }
+
+        .cta-box > p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .email-form {
             display: flex;
-            gap: 12px;
-            max-width: 500px;
+            gap: 10px;
+            max-width: 420px;
             margin: 0 auto;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .email-form input {
             flex: 1;
-            min-width: 250px;
-            padding: 14px 20px;
-            font-family: var(--font-sans);
-            font-size: 16px;
-            border: var(--b-1) solid var(--c-border);
-            border-radius: 12px;
-            background: var(--c-surface);
-            color: var(--c-ink);
+            min-width: 200px;
+            padding: 13px 16px;
+            font-family: var(--font);
+            font-size: 15px;
+            border: var(--border-w) solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
             outline: none;
-            transition: border-color var(--t-fast) var(--e-out), box-shadow var(--t-fast) var(--e-out);
+            transition: box-shadow 0.15s;
         }
 
         .email-form input:focus {
-            border-color: var(--c-accent);
-            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2);
+            box-shadow: 3px 3px 0 var(--pink);
         }
 
-        .email-form input::placeholder {
-            color: var(--c-ink-2);
+        .email-form input::placeholder { color: var(--muted); }
+
+        .email-form button:disabled {
             opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 480px) {
+            .email-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .email-form input {
+                min-width: 0;
+                width: 100%;
+            }
         }
 
         .form-success {
-            background: var(--c-surface);
-            border: 1px solid var(--c-border);
-            border-radius: 16px;
-            padding: 32px;
-            max-width: 500px;
+            display: none;
+            background: var(--pink);
+            border: var(--border-w) solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 400px;
             margin: 0 auto;
             text-align: center;
         }
+
         .form-success h3 {
-            font-size: 24px;
-            margin-bottom: 12px;
-            color: var(--c-accent);
-        }
-        .form-success p {
-            font-size: 16px;
-        }
-        .form-success p strong {
-            font-weight: 800;
-            color: var(--c-ink);
+            font-size: 20px;
+            margin-bottom: 6px;
         }
 
-        /* Categories / Tags */
-        .categories-section {
-            background: var(--c-surface-2);
-        }
-
-        .categories-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        .category-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: var(--c-surface);
-            border: var(--b-1) solid var(--c-border);
-            border-radius: var(--r-pill);
-            font-weight: 700;
+        .form-error {
+            display: none;
+            color: #c0392b;
             font-size: 14px;
-            transition: all var(--t-fast) var(--e-out);
-            cursor: default;
+            margin-top: 12px;
         }
 
-        .category-chip:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
+        .contact-note {
+            margin-top: 20px;
+            font-size: 13.5px;
+            color: var(--muted);
         }
 
-        .category-chip i {
-            font-size: 16px;
+        .contact-note a {
+            color: var(--ink);
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
-        .chip-automation i { color: var(--c-accent); }
-        .chip-ai i { color: var(--c-accent-2); }
-        .chip-integration i { color: var(--c-warn); }
-        .chip-messaging i { color: #FF6B6B; }
-        .chip-comments i { color: #4ECDC4; }
-        .chip-workflow i { color: #A78BFA; }
+        .cta-trust {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
 
-        /* Footer */
         footer {
-            background: var(--c-ink);
-            color: var(--c-bg);
-            padding: 48px 0;
-            border-top: var(--b-1) solid var(--c-border);
+            background: var(--ink);
+            color: #fff;
+            padding: 44px 0 28px;
+            border-top: var(--border-w) solid var(--border);
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 48px;
-            margin-bottom: 48px;
-            align-items: start;
-        }
-
-        @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-            .footer-links {
-                align-items: flex-start;
-            }
+            display: flex;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
         }
 
         .footer-logo {
-            font-size: 32px;
-            font-weight: 900;
+            font-size: 24px;
+            font-weight: 700;
             letter-spacing: -0.03em;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
 
-        .footer-logo span {
-            color: var(--c-accent);
-        }
+        .footer-logo .dot { color: var(--pink); }
 
         footer p {
-            color: #FFFFFF !important;
-            opacity: 1;
+            color: rgba(255,255,255,0.65);
+            font-size: 14px;
+            max-width: 300px;
+            line-height: 1.5;
         }
 
         .footer-links {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
             align-items: flex-end;
         }
 
-        .footer-links a {
-            color: var(--c-bg);
-            text-decoration: none;
-            font-weight: 600;
-            opacity: 0.8;
-            transition: opacity var(--t-fast) var(--e-out);
+        @media (max-width: 560px) {
+            .footer-links { align-items: flex-start; }
         }
 
-        .footer-links a:hover {
-            opacity: 1;
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.15s;
         }
+
+        .footer-links a:hover { color: #fff; }
 
         .footer-bottom {
-            padding-top: 32px;
-            border-top: 1px solid rgba(255,255,255,.1);
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
-            font-size: 14px;
-            opacity: 0.6;
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.4);
         }
 
-        /* Animations */
-        .animate-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s ease forwards;
-        }
+        .footer-bottom p + p { margin-top: 5px; }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        .delay-6 { animation-delay: 0.6s; }
-
-        /* Section Headers */
-        .section-header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        .section-header h2 {
-            margin-bottom: 16px;
-        }
-
-        .section-header p {
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Consent Banner */
         #consent-banner {
             position: fixed;
             bottom: 16px;
             left: 16px;
             right: 16px;
-            background: var(--c-ink);
-            color: var(--c-bg);
-            padding: 24px;
-            display: none; /* Hidden by default, shown by JS */
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            z-index: 2000;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            flex-wrap: wrap;
-            text-align: center;
-            max-width: 1200px;
+            max-width: 580px;
             margin: 0 auto;
+            background: var(--ink);
+            color: #fff;
+            padding: 18px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--pink);
+            display: none;
+            z-index: 2000;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.25);
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
+
         #consent-banner p {
-            color: var(--c-bg);
-            opacity: 0.9;
+            color: rgba(255,255,255,0.9);
+            font-size: 13.5px;
             margin: 0;
-            max-width: 600px;
-            font-size: 15px;
-            line-height: 1.5;
+            flex: 1;
+            min-width: 180px;
+            line-height: 1.4;
         }
+
         .consent-buttons {
             display: flex;
-            gap: 16px;
+            gap: 8px;
             flex-shrink: 0;
         }
-        #consent-banner .button--secondary {
+
+        #consent-banner .btn {
+            padding: 9px 16px;
+            font-size: 13px;
+        }
+
+        #consent-banner .btn-secondary {
             background: #333;
             color: #fff;
-            border-color: #444;
+            border-color: #555;
         }
-        #consent-banner .button--secondary:hover {
-            background: #444;
+
+        @media (max-width: 480px) {
+            #consent-banner {
+                flex-direction: column;
+                text-align: center;
+                bottom: 12px;
+                left: 12px;
+                right: 12px;
+            }
+            .consent-buttons { width: 100%; justify-content: center; }
         }
 
         #loading-bar {
@@ -875,218 +822,233 @@
             top: 0;
             left: 0;
             height: 3px;
-            background: var(--c-accent);
+            background: var(--pink);
             width: 0%;
             z-index: 9999;
-            transition: width 0.4s ease;
+            transition: width 0.35s ease;
         }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .d1 { animation-delay: 0.07s; }
+        .d2 { animation-delay: 0.14s; }
+        .d3 { animation-delay: 0.21s; }
+        .d4 { animation-delay: 0.28s; }
     </style>
 </head>
 <body>
     <div id="loading-bar"></div>
-    <!-- Navigation -->
+
     <nav class="nav">
         <div class="container">
-            <a href="#" class="logo">SKapi<span>.pro</span></a>
+            <a href="#" class="logo">SKapi<span class="dot">.</span>pro</a>
+
             <div class="nav-links">
                 <a href="/magicwriter/">Magic Writer</a>
                 <a href="#features">Features</a>
-                <a href="#testimonials">Testimonials</a>
+                <a href="#testimonials">Stories</a>
                 <a href="mailto:connect@skapi.pro">Contact</a>
             </div>
-            <a href="#cta" class="button button--primary">Get Started</a>
+
+            <a href="#cta" class="btn btn-primary nav-cta">Get early access</a>
+
+            <button class="burger" id="burger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="/magicwriter/">Magic Writer</a>
+        <a href="#features">Features</a>
+        <a href="#testimonials">Stories</a>
+        <a href="mailto:connect@skapi.pro">Contact</a>
+        <a href="#cta" class="btn btn-primary">Get early access</a>
+    </div>
+
     <section class="hero">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-        <div class="gradient-orb orb-4"></div>
+        <div class="coins-layer" id="coins-layer">
+            <div class="coin coin-lg coin-1">SK</div>
+            <div class="coin coin-md coin-2">SK</div>
+            <div class="coin coin-sm coin-3 coin-yellow">API</div>
+            <div class="coin coin-md coin-4">SK</div>
+            <div class="coin coin-sm coin-5">SK</div>
+            <div class="coin coin-sm coin-6 coin-yellow">API</div>
+        </div>
 
         <div class="container hero-content">
-            <h1 class="animate-in">Connect Skool to Make.com and n8n in One Click</h1>
-            <p class="hero-subtitle animate-in delay-1">Free automation, limitless possibilities.</p>
-            <p style="font-size: 14px; color: var(--c-ink-2); opacity: 0.7; margin-bottom: 32px;" class="animate-in delay-1">
-                <i class="fas fa-info-circle"></i> Powered by a custom, independent API. Not affiliated with Skool.
+            <h1 class="fade-up">The Skool API<br>for Make.com &amp; n8n</h1>
+            <p class="hero-sub fade-up d1">Automate member approvals, AI messages, comments and class access. Connect Skool to 2,000+ apps in one click — no code required.</p>
+            <p class="hero-note fade-up d1">
+                Independent Skool API · Not affiliated with Skool
             </p>
-            <div class="hero-cta animate-in delay-2">
-                <a href="#cta" class="button button--primary button--large">
-                    Join Waitlist
-                </a>
-                <a href="#features" class="button button--secondary button--large">
-                    Learn More
-                </a>
+            <div class="hero-cta fade-up d2">
+                <a href="#cta" class="btn btn-primary btn-large">Join the waitlist — free</a>
+                <a href="#features" class="btn btn-secondary btn-large">See features</a>
             </div>
         </div>
     </section>
 
-    <!-- Comparison Section -->
     <section class="section">
         <div class="container">
-            <div class="section-header animate-in">
-                <h2>The transformation</h2>
-                <p>See what changes when you automate your Skool community</p>
+            <div class="section-header fade-up">
+                <h2>Stop losing 10+ hours a week</h2>
+                <p>Community managers waste days on tasks a Skool API should handle automatically.</p>
             </div>
 
             <div class="comparison-grid">
-                <div class="card comparison-card animate-in delay-1">
-                    <div class="comparison-header">
-                        <h3>Before 😰</h3>
-                        <p>The old way of managing communities</p>
-                    </div>
+                <div class="card comparison-card fade-up d1">
+                    <h3>Without SKapi</h3>
+                    <p class="label">Manual Skool management</p>
                     <ul class="comparison-list">
-                        <li>Manual member approvals eating up your time</li>
-                        <li>Hours spent crafting individual messages</li>
-                        <li>Struggling to maintain personalized engagement</li>
-                        <li>Complex permission management headaches</li>
-                        <li>Repetitive tasks draining your energy</li>
+                        <li>Manually approving every member application</li>
+                        <li>Writing the same welcome messages over and over</li>
+                        <li>Chasing people who never show up after joining</li>
+                        <li>Jumping between tools just to update permissions</li>
+                        <li>Feeling behind every single day</li>
                     </ul>
                 </div>
 
-                <div class="card comparison-card after animate-in delay-2">
-                    <div class="comparison-header">
-                        <h3>After 🎉</h3>
-                        <p>Work smarter, not harder</p>
-                    </div>
+                <div class="card comparison-card after fade-up d2">
+                    <h3>With SKapi</h3>
+                    <p class="label">Skool automation on autopilot</p>
                     <ul class="comparison-list">
-                        <li>Automatic member screening and approval based on criteria</li>
-                        <li>AI-powered application review using GPT and Claude</li>
-                        <li>Automated class access based on member achievements</li>
-                        <li>Automated personalized messages using AI</li>
-                        <li>Automatic comments and replies</li>
-                        <li>Bulk permission updates <span class="coming-soon-badge">Coming Soon</span></li>
-                        <li>Bulk Messages to thousands <span class="coming-soon-badge">Coming Soon</span></li>
+                        <li>Members approved (or rejected) via Skool API</li>
+                        <li>AI writes personalized messages in your voice</li>
+                        <li>Automatic class access based on progress</li>
+                        <li>Comments &amp; replies that never sleep</li>
+                        <li>Bulk actions for thousands of members <span class="badge">Soon</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="section features-section" id="features">
         <div class="container">
-            <div class="section-header animate-in">
-                <h2>Powerful features</h2>
-                <p>Everything you need to automate your Skool community</p>
+            <div class="section-header fade-up">
+                <h2>Skool API features that ship</h2>
+                <p>Everything you need to automate a high-touch Skool community without burning out.</p>
             </div>
 
             <div class="features-grid">
-                <div class="card feature-card animate-in delay-1">
+                <div class="card feature-card fade-up d1">
                     <div class="feature-icon">
-                        <img src="make-color.webp" alt="Make.com logo" style="width: 36px; height: 36px; object-fit: contain;">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-label="Make.com"><path d="M13.38 3.498c-.27 0-.511.19-.566.465L9.85 18.986a.578.578 0 0 0 .453.678l4.095.826a.58.58 0 0 0 .682-.455l2.963-15.021a.578.578 0 0 0-.453-.678l-4.096-.826a.589.589 0 0 0-.113-.012zm-5.876.098a.576.576 0 0 0-.516.318L.062 17.697a.575.575 0 0 0 .256.774l3.733 1.877a.578.578 0 0 0 .775-.258l6.926-13.781a.577.577 0 0 0-.256-.776L7.762 3.658a.571.571 0 0 0-.258-.062zm11.74.115a.576.576 0 0 0-.576.576v15.426c0 .318.258.578.576.578h4.178a.58.58 0 0 0 .578-.578V4.287a.578.578 0 0 0-.578-.576Z"/></svg>
                     </div>
-                    <h3>Make.com Integration</h3>
-                    <p>First-ever Make.com integration for Skool. Connect your community workflows with 1000+ apps seamlessly.</p>
+                    <h3>Make.com + Skool API</h3>
+                    <p>First native Make.com integration for Skool. Connect your community to 2,000+ apps and build workflows in minutes.</p>
                 </div>
 
-                <div class="card feature-card animate-in delay-2">
-                    <div class="feature-icon">
-                        <img src="n8n-color.webp" alt="n8n logo" style="width: 36px; height: 36px; object-fit: contain;">
+                <div class="card feature-card fade-up d2">
+                    <div class="feature-icon yellow">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-label="n8n"><path d="M21.4737 5.6842c-1.1772 0-2.1663.8051-2.4468 1.8947h-2.8955c-1.235 0-2.289.893-2.492 2.111l-.1038.623a1.263 1.263 0 0 1-1.246 1.0555H11.289c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947s-2.1663.8051-2.4467 1.8947H4.973c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947C1.1311 9.4737 0 10.6047 0 12s1.131 2.5263 2.5263 2.5263c1.1772 0 2.1663-.8051 2.4468-1.8947h1.4223c.2804 1.0896 1.2696 1.8947 2.4467 1.8947 1.1772 0 2.1663-.8051 2.4468-1.8947h1.0008a1.263 1.263 0 0 1 1.2459 1.0555l.1038.623c.203 1.218 1.257 2.111 2.492 2.111h.3692c.2804 1.0895 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263c-1.1772 0-2.1664.805-2.4468 1.8947h-.3692a1.263 1.263 0 0 1-1.246-1.0555l-.1037-.623A2.52 2.52 0 0 0 13.9607 12a2.52 2.52 0 0 0 .821-1.4794l.1038-.623a1.263 1.263 0 0 1 1.2459-1.0555h2.8955c.2805 1.0896 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263m0 1.2632a1.263 1.263 0 0 1 1.2631 1.2631 1.263 1.263 0 0 1-1.2631 1.2632 1.263 1.263 0 0 1-1.2632-1.2632 1.263 1.263 0 0 1 1.2632-1.2631M2.5263 10.7368A1.263 1.263 0 0 1 3.7895 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 1.2632 12a1.263 1.263 0 0 1 1.2631-1.2632m6.3158 0A1.263 1.263 0 0 1 10.1053 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 7.579 12a1.263 1.263 0 0 1 1.2632-1.2632m10.1053 3.7895a1.263 1.263 0 0 1 1.2631 1.2632 1.263 1.263 0 0 1-1.2631 1.2631 1.263 1.263 0 0 1-1.2632-1.2631 1.263 1.263 0 0 1 1.2632-1.2632"/></svg>
                     </div>
-                    <h3>n8n Integration</h3>
-                    <p>Powerful workflow automation with n8n. Create custom integrations and automate complex tasks with visual workflows.</p>
+                    <h3>n8n + Skool API</h3>
+                    <p>Self-host or cloud. Build complex multi-step Skool automations with full control over your data.</p>
                 </div>
 
-                <div class="card feature-card animate-in delay-3">
-                    <div class="feature-icon">
-                        <i class="fas fa-project-diagram"></i>
+                <div class="card feature-card fade-up d3">
+                    <div class="feature-icon white">
+                        <i class="fas fa-bolt" style="font-size: 20px;"></i>
                     </div>
-                    <h3>Zero Coding Required</h3>
-                    <p>Handy setup with simple point-and-click interface. No technical skills needed — just plug and play.</p>
+                    <h3>Zero coding required</h3>
+                    <p>Point-and-click setup. No developers, no scripts. If you can use Skool, you can use the API.</p>
                 </div>
 
-                <div class="card feature-card animate-in delay-4">
-                    <div class="feature-icon">
-                        <i class="fas fa-envelope-open-text"></i>
+                <div class="card feature-card fade-up d1">
+                    <div class="feature-icon yellow">
+                        <i class="fas fa-paper-plane" style="font-size: 18px;"></i>
                     </div>
-                    <h3>Mass Messaging</h3>
-                    <p>Send messages to thousands of members in one click. Personalize at scale without the manual effort.</p>
+                    <h3>Mass messaging via API</h3>
+                    <p>Reach thousands of members with personalized messages in one click. Scale without losing the human touch.</p>
                 </div>
 
-                <div class="card feature-card animate-in delay-4">
+                <div class="card feature-card fade-up d2">
                     <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
+                        <i class="fas fa-brain" style="font-size: 18px;"></i>
                     </div>
-                    <h3>AI-Powered Automation</h3>
-                    <p>Leverage AI to automatically moderate content, suggest responses, and engage with your community 24/7.</p>
+                    <h3>AI that sounds like you</h3>
+                    <p>GPT &amp; Claude review applications, draft replies, and engage members — trained on your tone of voice.</p>
                 </div>
 
-                <div class="card feature-card animate-in delay-4">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
+                <div class="card feature-card fade-up d3">
+                    <div class="feature-icon white">
+                        <i class="fas fa-comments" style="font-size: 18px;"></i>
                     </div>
-                    <h3>Community-Driven Development</h3>
-                    <p>We build features based on your requests. <a href="https://www.skool.com/ai-pays-my-bills-7018/about" target="_blank" rel="noopener" style="color: var(--c-accent); font-weight: 700; text-decoration: underline;">Join our community</a>, suggest ideas, and help shape the future of Skool automation.</p>
+                    <h3>Built with the community</h3>
+                    <p>We ship what you ask for. <a href="https://www.skool.com/ai-pays-my-bills-7018/about" target="_blank" rel="noopener">Join our Skool group</a> and vote on the next API features.</p>
                 </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 48px;" class="animate-in delay-5">
-                <p style="font-size: 18px; color: var(--c-ink-2); font-weight: 600;">
-                    🚀 And much more coming soon...
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section class="section" id="testimonials">
         <div class="container">
-            <div class="section-header animate-in">
-                <h2>Loved by community managers</h2>
-                <p>See what early users are saying about SKapi</p>
+            <div class="section-header fade-up">
+                <h2>Community managers are switching</h2>
+                <p>Real results from people who used to drown in Skool admin work.</p>
             </div>
 
             <div class="testimonials-grid">
-                <div class="card testimonial-card animate-in delay-1">
+                <div class="card testimonial-card fade-up d1">
                     <div class="testimonial-quote">
-                        <p>SKapi saved me 3+ hours daily. I can finally focus on creating content instead of repetitive admin tasks.</p>
+                        SKapi gave me back 3+ hours every day. I finally create content instead of approving members and answering the same questions.
                     </div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="avatar">SK</div>
                         <div>
-                            <div class="testimonial-name">Sarah K.</div>
-                            <div class="testimonial-role">Community Manager, 5K members</div>
+                            <div class="author-name">Sarah K.</div>
+                            <div class="author-role">Community Manager · 5K members</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card testimonial-card animate-in delay-2">
+                <div class="card testimonial-card fade-up d2">
                     <div class="testimonial-quote">
-                        <p>The AI-powered comments are incredible. My members think I'm online 24/7, but it's all automated!</p>
+                        Members think I'm online 24/7. The AI replies are so good that people don't realize it's automated.
                     </div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="avatar">MJ</div>
                         <div>
-                            <div class="testimonial-name">Mike J.</div>
-                            <div class="testimonial-role">Course Creator, 10K+ students</div>
+                            <div class="author-name">Mike J.</div>
+                            <div class="author-role">Course Creator · 10K+ students</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card testimonial-card animate-in delay-3">
+                <div class="card testimonial-card fade-up d3">
                     <div class="testimonial-quote">
-                        <p>Make.com integration is a game changer. Connected Skool to my entire tech stack in minutes.</p>
+                        Connected Skool to my entire stack in under 10 minutes. Make.com + SKapi is the combo I didn't know I needed.
                     </div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="avatar">AL</div>
                         <div>
-                            <div class="testimonial-name">Alex L.</div>
-                            <div class="testimonial-role">Tech Entrepreneur</div>
+                            <div class="author-name">Alex L.</div>
+                            <div class="author-role">Tech Entrepreneur</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card testimonial-card animate-in delay-4">
+                <div class="card testimonial-card fade-up d4">
                     <div class="testimonial-quote">
-                        <p>Finally, automation for Skool! This should have existed years ago. Can't imagine managing without it now.</p>
+                        This Skool API should have existed years ago. Once you automate Skool, going back feels impossible.
                     </div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="avatar">ER</div>
                         <div>
-                            <div class="testimonial-name">Emma R.</div>
-                            <div class="testimonial-role">Community Builder</div>
+                            <div class="author-name">Emma R.</div>
+                            <div class="author-role">Community Builder</div>
                         </div>
                     </div>
                 </div>
@@ -1094,58 +1056,181 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section class="section cta-section" id="cta">
         <div class="container">
-            <div class="cta-content animate-in">
-                <h2>Ready to automate your community?</h2>
-                <p>Join the waitlist for early access and be among the first to transform your Skool workflow.</p>
-                <form class="email-form">
-                    <input type="email" name="email" id="email-input" placeholder="Enter your email" required>
-                    <button type="submit" class="button button--primary button--large">
+            <div class="cta-box fade-up">
+                <h2>Get the Skool API early</h2>
+                <p>Join the waitlist. Free while we're in beta. Limited spots so we can onboard everyone properly.</p>
+                
+                <form class="email-form" id="waitlist-form">
+                    <input type="email" name="email" id="email-input" placeholder="you@email.com" required autocomplete="email">
+                    <button type="submit" class="btn btn-primary btn-large" id="submit-btn">
+                        Join waitlist
                         <i class="fas fa-arrow-right"></i>
-                        Join Waitlist
                     </button>
                 </form>
-                <p style="margin-top: 24px; font-size: 15px;">
-                    Questions? Email us at <a href="mailto:connect@skapi.pro" style="color: var(--c-accent); font-weight: 700;">connect@skapi.pro</a>
+
+                <div class="form-success" id="form-success">
+                    <h3>You're in 🎉</h3>
+                    <p>We'll email you as soon as your invite is ready.</p>
+                </div>
+
+                <p class="form-error" id="form-error">Something went wrong. Please try again or email us.</p>
+
+                <p class="cta-trust">
+                    <i class="fas fa-lock" style="font-size: 11px;"></i>
+                    No spam · Unsubscribe anytime · Free during beta
+                </p>
+
+                <p class="contact-note">
+                    Questions? <a href="mailto:connect@skapi.pro">connect@skapi.pro</a>
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Consent Banner -->
     <div id="consent-banner">
-        <p>We use cookies to analyze site performance and enhance your experience. By clicking “Accept”, you agree to our use of cookies for analytics.</p>
+        <p>We use cookies to understand how the site is used and improve it. Accept to continue with analytics.</p>
         <div class="consent-buttons">
-            <button id="consent-accept" class="button button--primary">Accept</button>
-            <button id="consent-decline" class="button button--secondary">Decline</button>
+            <button id="consent-accept" class="btn btn-pink">Accept</button>
+            <button id="consent-decline" class="btn btn-secondary">Decline</button>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <div class="footer-logo">SKapi<span>.pro</span></div>
-                    <p>The first automation platform for Skool communities. Save time, engage more, grow faster.</p>
+                    <div class="footer-logo">SKapi<span class="dot">.</span>pro</div>
+                    <p>The Skool API for Make.com &amp; n8n. Automate your community. Save time, engage more, grow faster.</p>
                 </div>
-                <div>
-                    <div class="footer-links">
-                        <a href="/privacy">Privacy Policy</a>
-                        <a href="/terms">Terms of Service</a>
-                        <a href="mailto:connect@skapi.pro">Contact</a>
-                    </div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="mailto:connect@skapi.pro">Contact</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 SKapi.pro — Automate Your Community</p>
-                <p style="font-size: 13px; margin-top: 8px; opacity: 0.7;">SKapi is a custom API and is not affiliated with, endorsed by, or sponsored by Skool.</p>
+                <p>© 2026 SKapi.pro — Skool API &amp; Automation</p>
+                <p>SKapi is a custom API and is not affiliated with, endorsed by, or sponsored by Skool.</p>
             </div>
         </div>
     </footer>
 
-    <script src="main.js" defer></script>
+    <script>
+        // ========== CONFIG ==========
+        // Замени на свой webhook (Make.com Custom Webhook / n8n Webhook)
+        const WEBHOOK_URL = 'https://n8n.aaagency.at/webhook/e7aa0a07-407f-44d1-b5bc-6097377a298a';
+        // ============================
+
+        const bar = document.getElementById('loading-bar');
+        window.addEventListener('load', () => {
+            bar.style.width = '100%';
+            setTimeout(() => bar.style.opacity = '0', 400);
+        });
+        bar.style.width = '35%';
+        setTimeout(() => bar.style.width = '75%', 180);
+
+        const burger = document.getElementById('burger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        burger?.addEventListener('click', () => {
+            burger.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+
+        mobileMenu?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        // Parallax: coins move down on scroll
+        const coinsLayer = document.getElementById('coins-layer');
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking && coinsLayer) {
+                window.requestAnimationFrame(() => {
+                    coinsLayer.style.transform = 'translateY(' + (window.scrollY * 0.35) + 'px)';
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        const banner = document.getElementById('consent-banner');
+        if (!localStorage.getItem('skapi_consent') && !localStorage.getItem('consentStatus')) {
+            banner.style.display = 'flex';
+        }
+
+        document.getElementById('consent-accept')?.addEventListener('click', () => {
+            localStorage.setItem('skapi_consent', 'accepted'); localStorage.setItem('consentStatus', 'granted');
+            banner.style.display = 'none';
+            gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'granted' });
+        });
+
+        document.getElementById('consent-decline')?.addEventListener('click', () => {
+            localStorage.setItem('skapi_consent', 'declined'); localStorage.setItem('consentStatus', 'denied');
+            banner.style.display = 'none';
+            gtag('consent', 'update', { analytics_storage: 'denied', ad_storage: 'denied' });
+        });
+
+        const form = document.getElementById('waitlist-form');
+        const success = document.getElementById('form-success');
+        const formError = document.getElementById('form-error');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formError.style.display = 'none';
+
+            const email = document.getElementById('email-input').value.trim();
+            if (!email) return;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+
+                // no-cors: assume success if no network error
+                form.style.display = 'none';
+                success.style.display = 'block';
+
+                if (typeof fbq === 'function') fbq('track', 'Lead');
+                if (typeof gtag === 'function') gtag('event', 'generate_lead', {
+                    event_category: 'waitlist',
+                    event_label: 'email_signup'
+                });
+            } catch (err) {
+                console.error(err);
+                formError.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Join waitlist <i class="fas fa-arrow-right"></i>';
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
