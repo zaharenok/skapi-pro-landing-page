@@ -18,7 +18,7 @@ jobs:
       - name: Stage site files
         run: |
           mkdir site
-          cp -r index.html privacy.html terms.html robots.txt sitemap.xml main.js favicon.svg _redirects magicwriter site/
+          cp -r index.html privacy.html terms.html 404.html robots.txt sitemap.xml main.js favicon.svg _redirects magicwriter site/
           cp *.webp site/
 
       - name: Deploy
